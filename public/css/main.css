@@ -1,0 +1,19 @@
+pre {
+  background-color: inherit !important;
+}
+
+#table-of-contents {
+  column-count: 4;
+}
+
+#table-of-contents li {
+  list-style: circle;
+  margin: 0;
+  padding: 0;
+}
+
+.back-to-top {
+  float: right;
+  font-size: small;
+  margin-top: 2em;
+}
