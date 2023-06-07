@@ -30,7 +30,7 @@ function appendRestyler(restyler: Restyler) {
   const section = document.createElement("section");
   section.innerHTML = restylerTemplate(restyler);
   section.querySelectorAll("pre code").forEach((block) => {
-    hljs.highlightBlock(block);
+    hljs.highlightElement(block);
   });
   section.querySelectorAll("a.back-to-top").forEach((block) => {
     let a = block as HTMLAnchorElement;
@@ -60,13 +60,10 @@ function appendRestyler(restyler: Restyler) {
 
 function restylerTemplate(restyler: Restyler): string {
   const asterisk = restyler.enabled ? "" : "*";
+  const language = restyler.metadata.languages[0];
   const documentation = restyler.documentation.map((url) => {
     return `<a href="${url}">${url}</a>`;
   });
-  const language =
-    restyler.metadata.languages.length >= 0
-      ? restyler.metadata.languages[0].toLowerCase()
-      : "plain";
 
   return `
     <h3 id=${restyler.name} class="uncenter">
@@ -101,19 +98,55 @@ function restylerTemplate(restyler: Restyler): string {
   `;
 }
 
-function testTemplate(language: string, test: Test): string {
+function testTemplate(language: string | null, test: Test): string {
+  const clazz = languageClass(language);
+
   return `
   <div class="test">
     <div class="contents">
       <p><strong>Before</strong></p>
-      <pre><code class="language-${language}">${test.contents}</code></pre>
+      <pre><code class="${clazz}">${escapeHTML(test.contents)}</code></pre>
     </div>
     <div class="restyled">
       <p><strong>After</strong></p>
-      <pre><code class="language-${language}">${test.restyled}</code></pre>
+      <pre><code class="${clazz}">${escapeHTML(test.restyled)}</code></pre>
     </div>
   </div>
   `;
+}
+
+function languageClass(language: string | null): string {
+  if (language === null) {
+    return "nohighlight";
+  }
+
+  switch (language) {
+    // No support in highlight.js
+    case "Dhall":
+      return "nohighlight";
+    // case "Elm":
+    //   return "nohighlight";
+    case "GN":
+      return "nohighlight";
+    case "Terraform":
+      return "nohighlight";
+
+    // Present as another name
+    case "C#":
+      return "csharp";
+    case "F#":
+      return "fsharp";
+    case "POSIX sh":
+      return "bash";
+    case "PSQL":
+      return "postgresql";
+    case "System Verilog":
+      return "verilog";
+
+    // Most can work by just lowercasing
+    default:
+      return `language-${language.toLowerCase()}`;
+  }
 }
 
 function loadManifest(channel: string) {
@@ -134,6 +167,10 @@ function loadManifest(channel: string) {
 }
 
 function scrollToElementById(id: string) {
+  if (id === "") {
+    return;
+  }
+
   const anchor = document.getElementById(id);
 
   if (anchor) {
@@ -141,6 +178,20 @@ function scrollToElementById(id: string) {
       anchor.getBoundingClientRect().top + window.scrollY - navBarHeight;
     window.scrollTo({ top: top, behavior: "smooth" });
   }
+}
+
+function escapeHTML(str: string): string {
+  return str.replace(
+    /[&<>'"]/g,
+    (tag) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "'": "&#39;",
+        '"': "&quot;",
+      }[tag] || tag)
+  );
 }
 
 $(function () {
