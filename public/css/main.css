@@ -1,19 +1,37 @@
-pre {
-  background-color: inherit !important;
+pre, code {
+  color: #444;
+  background-color: #f0f0f0;
 }
 
-#table-of-contents {
-  column-count: 4;
+aside#table-of-contents {
+  background-color: #595959;
+  color: white;
+  height: 100%;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 660px;
+  position: fixed;
+  top: 0;
+  width: 240px;
+  z-index: 1;
 }
 
-#table-of-contents li {
-  list-style: circle;
-  margin: 0;
-  padding: 0;
+#table-of-contents ul {
+  list-style-type: none;
 }
 
-.back-to-top {
-  float: right;
-  font-size: small;
-  margin-top: 2em;
+#table-of-contents a {
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+#main {
+  margin: 0 auto 0 240px;
+}
+
+.test {
+  border-radius: 5px;
+  border: 1px solid #909090;
+  margin: 1em;
+  padding: 0.5rem;
 }
