@@ -20,8 +20,12 @@ DISTRIBUTION_ID = $(shell \
 ROOT = ./public
 PREFIX = /available-restylers
 
+.PHONY: build
+build:
+	yarn run tsc
+
 .PHONY: deploy
-deploy:
+deploy: build
 	$(AWS) s3 sync --acl public-read --delete $(ROOT)/ \
 	  s3://$(BUCKET)$(PREFIX)/
 	$(AWS) cloudfront create-invalidation \
