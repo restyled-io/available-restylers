@@ -1,3 +1,7 @@
+code {
+  padding: 0;
+}
+
 pre, code {
   color: #444;
   background-color: #f3f3f3;
