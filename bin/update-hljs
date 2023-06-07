@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eou pipefail
+
+if (($# != 1)); then
+  echo "" >&2
+  exit 64
+fi
+
+zipfile=$1
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+unzip -d "$tmp" "$zipfile"
+
+rm -r public/vendor/highlight/{languages,styles}/* || true
+cp -v "$tmp"/highlight.min.js public/vendor/highlight.min.js
+cp -v "$tmp"/styles/default.min.css public/vendor/highlight/styles/default.min.css
+cp -v -r "$tmp"/languages public/vendor/highlight/
