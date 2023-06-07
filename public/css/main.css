@@ -1,6 +1,24 @@
 pre, code {
   color: #444;
-  background-color: #f0f0f0;
+  background-color: #f3f3f3;
+}
+
+pre code.hljs {
+  padding: 0 !important;
+}
+
+table {
+  width: 55ch;
+  margin: 0 auto 1em auto;
+}
+
+table tr:first-child > th:first-child {
+  border-radius: 0;
+}
+
+table th {
+  color: inherit;
+  background-color: inherit;
 }
 
 aside#table-of-contents {
@@ -9,7 +27,7 @@ aside#table-of-contents {
   height: 100%;
   left: 0;
   overflow-x: hidden;
-  padding-top: 660px;
+  padding-top: 700px;
   position: fixed;
   top: 0;
   width: 240px;

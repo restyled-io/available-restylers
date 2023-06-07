@@ -59,7 +59,6 @@ function appendRestyler(restyler: Restyler) {
 }
 
 function restylerTemplate(restyler: Restyler): string {
-  const asterisk = restyler.enabled ? "" : "*";
   const language = restyler.metadata.languages[0];
   const documentation = restyler.documentation.map((url) => {
     return `<a href="${url}">${url}</a>`;
@@ -67,21 +66,32 @@ function restylerTemplate(restyler: Restyler): string {
 
   return `
     <h3 id=${restyler.name} class="uncenter">
-      ${restyler.name}${asterisk}
+      ${restyler.name}
     </h3>
 
-    <p>
-      <strong>Languages</strong>:
-      ${restyler.metadata.languages.join(", ")}
-    </p>
-
-    <p><strong>Documentation</strong>:</p>
-    <ul>
-      <li>${documentation.join("</li><li>")}</li>
-    </ul>
+    <table>
+      <tbody>
+        <tr>
+          <th>Languages</th>
+          <td>${restyler.metadata.languages.join(", ")}</td>
+        </tr>
+        <tr>
+          <th>Tag</th>
+          <td>${restyler.image.split(":").slice(-1)}</td>
+        </tr>
+        <tr>
+          <th>Links</th>
+          <td>${documentation.join("<br />")}</td>
+        </tr>
+        <tr>
+          <th>Enabled by default?</th>
+          <td>${restyler.enabled ? "Yes" : "No"}</td>
+        </tr>
+      </tbody>
+    </table>
 
     <details>
-    <summary>Default configuration</summary>
+    <summary>Configuration</summary>
     <pre><code class="language-yaml">${jsyaml.dump({
       image: restyler.image,
       command: restyler.command,
@@ -121,11 +131,13 @@ function languageClass(language: string | null): string {
   }
 
   switch (language) {
+    // Non-language-specific case
+    case "*":
+      return "nohighlight";
+
     // No support in highlight.js
     case "Dhall":
       return "nohighlight";
-    // case "Elm":
-    //   return "nohighlight";
     case "GN":
       return "nohighlight";
     case "Terraform":
