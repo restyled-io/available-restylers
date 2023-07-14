@@ -9,6 +9,10 @@ yarn install
 yarn run tsc -- --watch
 ```
 
+```console
+$BROWSER public/index.html
+```
+
 ## Deployment
 
 ```console
