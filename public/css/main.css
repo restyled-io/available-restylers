@@ -27,19 +27,21 @@ table th {
 
 aside#table-of-contents {
   background-color: #595959;
+  border-radius: unset;
   color: white;
+  display: block;
   height: 100%;
   left: 0;
   overflow-x: hidden;
-  padding-top: 700px;
   position: fixed;
-  top: 0;
+  top: 46px; /* height of nav */
   width: 240px;
   z-index: 1;
 }
 
 #table-of-contents ul {
   list-style-type: none;
+  padding-top: 12px;
 }
 
 #table-of-contents a {
